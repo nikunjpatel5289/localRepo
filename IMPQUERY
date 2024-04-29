@@ -1,0 +1,332 @@
+// Category Wise Selling Data Total [Total Amount Category Wise]...
+[
+  {
+    $lookup: {
+      from: "products",
+      let: {
+        productIds: "$products.productId",
+      },
+      pipeline: [
+        {
+          $match: {
+            $expr: {
+              $in: ["$_id", "$$productIds"],
+            },
+            userId: ObjectId(
+              "6604176e1e389cea1e3502f1"
+            ),
+          },
+        },
+      ],
+      as: "orderProducts",
+    },
+  },
+  {
+    $unwind: "$orderProducts",
+  },
+  {
+    $lookup: {
+      from: "categories",
+      localField: "orderProducts.categoryId",
+      foreignField: "_id",
+      as: "category",
+    },
+  },
+  {
+    $addFields: {
+      totalPrice: {
+        $multiply: [
+          "$orderProducts.prodPrice",
+          {
+            $arrayElemAt: [
+              "$products.qty",
+              {
+                $indexOfArray: [
+                  "$products.productId",
+                  "$orderProducts._id",
+                ],
+              },
+            ],
+          },
+        ],
+      },
+      categoryId: {
+        $arrayElemAt: ["$category._id", 0],
+      },
+
+      categoryName: {
+        $arrayElemAt: ["$category.categoryName", 0],
+      },
+    },
+  },
+  {
+    $group: {
+      _id: "$categoryId",
+      categoryName: {
+        $first: "$categoryName",
+      },
+      totalOrderAmount: {
+        $sum: "$totalPrice",
+      },
+    },
+  },
+]
+
+// Product Name Wise total qty and With his total REPORT 
+[
+  {
+    $lookup: {
+      from: "products",
+      let: {
+        productIds: "$products.productId",
+      },
+      pipeline: [
+        {
+          $match: {
+            $expr: {
+              $in: ["$_id", "$$productIds"],
+            },
+            userId: ObjectId(
+              "6604176e1e389cea1e3502f1"
+            ),
+          },
+        },
+      ],
+      as: "orderProducts",
+    },
+  },
+  {
+    $addFields: {
+      productSales: {
+        $map: {
+          input: "$orderProducts",
+          as: "product",
+          in: {
+            name: "$$product.prodName",
+            quantity: {
+              $arrayElemAt: [
+                "$products.qty",
+                {
+                  $indexOfArray: [
+                    "$products.productId",
+                    "$$product._id",
+                  ],
+                },
+              ],
+            },
+            totalPrice: {
+              $multiply: [
+                "$$product.prodPrice",
+                {
+                  $arrayElemAt: [
+                    "$products.qty",
+                    {
+                      $indexOfArray: [
+                        "$products.productId",
+                        "$$product._id",
+                      ],
+                    },
+                  ],
+                },
+              ],
+            },
+          },
+        },
+      },
+    },
+  },
+  {
+    $unwind: "$productSales",
+  },
+  {
+    $group: {
+      _id: {
+        productId: "$productSales.name",
+        productName: "$productSales.name",
+      },
+      totalSales: {
+        $sum: "$productSales.totalPrice",
+      },
+      totalQuantity: {
+        $sum: "$productSales.quantity",
+      },
+    },
+  },
+  {
+    $project: {
+      _id: "$_id.productId",
+      productName: "$_id.prodName",
+      totalSales: 1,
+      totalQuantity: 1,
+    },
+  },
+]
+
+// Categorty Id Wise Selling product Total And TotalQty
+[
+  {
+    $lookup: {
+      from: "products",
+      let: { productIds: "$products.productId" },
+      pipeline: [
+        {
+          $match: {
+            $expr: {
+              $in: ["$_id", "$$productIds"],
+            },
+            userId: ObjectId(
+              "660692894904f9fb170273f6"
+            ),
+            categoryId: ObjectId('660b927386a1e56ce2c7b8a7'), // Replace CATEGORY_ID with the desired category ID
+          },
+        },
+      ],
+      as: "orderProducts",
+    },
+  },
+  {
+    $addFields: {
+      productSales: {
+        $map: {
+          input: "$orderProducts",
+          as: "product",
+          in: {
+            name: "$$product.prodName",
+            quantity: {
+              $arrayElemAt: [
+                "$products.qty",
+                {
+                  $indexOfArray: [
+                    "$products.productId",
+                    "$$product._id",
+                  ],
+                },
+              ],
+            },
+            totalPrice: {
+              $multiply: [
+                "$$product.prodPrice",
+                {
+                  $arrayElemAt: [
+                    "$products.qty",
+                    {
+                      $indexOfArray: [
+                        "$products.productId",
+                        "$$product._id",
+                      ],
+                    },
+                  ],
+                },
+              ],
+            },
+          },
+        },
+      },
+    },
+  },
+  {
+    $unwind: "$productSales",
+  },
+  {
+    $group: {
+      _id: {
+        productId: "$productSales.name",
+        productName: "$productSales.name",
+      },
+      totalSales: {
+        $sum: "$productSales.totalPrice",
+      },
+      totalQuantity: {
+        $sum: "$productSales.quantity",
+      },
+    },
+  },
+  {
+    $project: {
+      _id: "$_id.productId",
+      productName: "$_id.productName",
+      totalSales: 1,
+      totalQuantity: 1,
+    },
+  },
+]
+
+
+
+
+
+
+
+
+//>>>>>>>>>>>>>>>>>>> not this
+[
+  {
+    "$lookup": {
+      "from": "products",
+      "let": {
+        "productIds": "$products.productId"
+      },
+      "pipeline": [
+        {
+          "$match": {
+            "$expr": {
+              "$in": ["$_id", "$$productIds"]
+            },
+            "userId": ObjectId('6604176e1e389cea1e3502f1')
+          }
+        }
+      ],
+      "as": "orderProducts"
+    }
+  },
+  {
+    "$addFields": {
+      "productSales": {
+        "$map": {
+          "input": "$orderProducts",
+          "as": "product",
+          "in": {
+            "name": "$$product.name",
+            "quantity": {
+              "$arrayElemAt": [
+                "$products.qty",
+                {
+                  "$indexOfArray": [
+                    "$products.productId",
+                    "$$product._id"
+                  ]
+                }
+              ]
+            },
+            "totalPrice": {
+              "$multiply": [
+                "$$product.prodPrice",
+                {
+                  "$arrayElemAt": [
+                    "$products.qty",
+                    {
+                      "$indexOfArray": [
+                        "$products.productId",
+                        "$$product._id"
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "$unwind": "$productSales"
+  },
+  {
+    "$group": {
+      "_id": "$productSales.name",
+      "totalSales": { "$sum": "$productSales.totalPrice" },
+      "totalQuantity": { "$sum": "$productSales.quantity" }
+    }
+  }
+]
