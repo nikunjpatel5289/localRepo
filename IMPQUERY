@@ -330,3 +330,52 @@
     }
   }
 ]
+
+// Readme....
+## MediBazar (E-commerce website)
+Welcome to our multivendor ecommerce platform MediBazar, where a the of products and opportunities await both buyers and sellers alike. Our platform is designed to connect diverse vendors with eager shoppers, offering a vast array of pharmacy products to suit every taste and need. Whether you're a seller looking to showcase your unique offerings or a shopper in search of the perfect item, our intuitive interface and robust features make the entire process seamless and enjoyable.
+
+### Modeules
+- **Admin :-** The admin holds authority to manage vendors and users, maintain their own products, showcase vendors' products, control them, Show reports on sold products, and check the remaining stock history.The admin is responsible for managing promotion codes and overseeing transactions on the Stripe dashboard.
+- **Vendor :-** vendor portal, where sellers can easily manage their products and sales. Upon logging in, vendors gain access to a comprehensive dashboard tailored to their needs. Here, vendors can effortlessly add, update, or remove products, ensuring their inventory is always up-to-date. They can also track their monthly sales performance, accessing detailed reports that provide insights into their product sales trends and performance metrics. Additionally, vendors can generate reports specifically showcasing their product sales, allowing them to analyze their best-selling items and optimize their inventory accordingly.
+- **User :-** users gain access to their personalized profile, where they can manage their account details and preferences. With our intuitive search function, users can easily find items according to their specific needs and preferences, adding them to their cart with just a few clicks. Our streamlined checkout process ensures a hassle-free transaction, where users can review their order, select their preferred payment method, and securely complete their purchase using the Stripe payment gateway. Once the order is placed, users can conveniently check their order history, download invoices, and track the status of their deliveries, providing them with peace of mind and confidence in their shopping journey.
+
+
+## Tech
+
+**Client:** Next Js, Redux, TailwindCSS, Bootstrap 5
+
+**Server:** Nest Js
+
+**Databse:** Mongo DB
+
+
+## Installation
+Install my-project with my GitHub.
+
+```bash
+npm run dev
+# or
+yarn dev
+# or
+pnpm dev
+# or
+bun dev
+```
+
+Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+
+You can start editing the page by modifying `app/...`. The page auto-updates as you edit the file.
+
+This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+
+
+
+## Contributing
+
+If you want to contribute to this project you can email me - nikunjpatel123777@gmail.com or you can pull request.
+
+## Author
+
+- Nikunj Patel [@nikunjpatel5289](https://github.com/nikunjpatel5289)
+
